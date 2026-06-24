@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para mi bonita 💖</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -23,7 +23,9 @@
         <h1>💖 Para ti, Kory</h1>
         
         <div id="counter-box" class="counter-box">
-            <div class="hourglass">⏳</div>
+            <div class="hourglass-container">
+                <div class="custom-hourglass">⏳</div>
+            </div>
             <div class="counter-text-side">
                 <p class="counter-title">Llevamos juntos:</p>
                 <div id="timer" class="timer">0 días, 0h 0m 0s</div>
@@ -77,19 +79,20 @@ function updateCounter() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById("timer").innerHTML = `${days} días, ${hours}h ${minutes}m ${seconds}s`;
+    document.getElementById("timer").innerHTML = `${days} d, ${hours}h ${minutes}m ${seconds}s`;
 }
 
 // Crear partículas lentas ambientales en el fondo negro
 function initBgParticles() {
     const container = document.getElementById('bg-particles');
-    for (let i = 0; i < 20; i++) {
+    container.innerHTML = '';
+    for (let i = 0; i < 15; i++) {
         const p = document.createElement('div');
         p.classList.add('bg-particle');
         p.style.left = Math.random() * 100 + 'vw';
         p.style.top = Math.random() * 100 + 'vh';
-        p.style.animationDelay = Math.random() * 5 + 's';
-        p.style.animationDuration = Math.random() * 6 + 6 + 's';
+        p.style.animationDelay = Math.random() * 4 + 's';
+        p.style.animationDuration = Math.random() * 5 + 5 + 's';
         container.appendChild(p);
     }
 }
@@ -100,14 +103,14 @@ function openLetter() {
     document.getElementById("card").classList.add("show");
     
     typeLines(normalText);
-    heartInterval = setInterval(createHeart, 280);
+    heartInterval = setInterval(createHeart, 330);
     
     updateCounter();
     timerInterval = setInterval(updateCounter, 1000);
 
     const audio = document.getElementById("bgMusic");
     audio.currentTime = 0; 
-    audio.play().catch(e => console.log("Audio diferido o bloqueado"));
+    audio.play().catch(e => console.log("Audio diferido"));
 }
 
 function closeLetter() {
@@ -149,7 +152,7 @@ function typeLines(lines) {
                 j = 0;
                 currentTimeout = setTimeout(write, 350); 
             }
-        }, 20); 
+        }, 22); 
     }
     write();
 }

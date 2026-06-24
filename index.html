@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para mi bonita 💖</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght=700&family=Poppins:wght=400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -86,6 +86,7 @@ function updateCounter() {
 
 function initBgParticles() {
     const container = document.getElementById('bg-particles');
+    if (!container) return;
     container.innerHTML = '';
     for (let i = 0; i < 22; i++) {
         const p = document.createElement('div');
@@ -155,13 +156,14 @@ function closeLetter() {
 function typeLines(lines) {
     let el = document.getElementById("text");
     el.innerHTML = "";
-    let i = 0; let j = 0;
+    let i = 0; 
+    let j = 0;
 
     function write() {
         if (i >= lines.length) {
             document.getElementById("quiz-section").style.display = "block";
             const textBox = document.querySelector('.text-box');
-            textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
+            if (textBox) textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
             return;
         }
         let line = Array.from(lines[i]);
@@ -179,7 +181,7 @@ function typeLines(lines) {
                 currentTimeout = setTimeout(write, 350); 
                 
                 const textBox = document.querySelector('.text-box');
-                textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
+                if (textBox) textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
             }
         }, 22); 
     }

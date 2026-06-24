@@ -11,9 +11,44 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background-color: #080808; /* Fondo negro premium */
     overflow: hidden;
     position: relative;
+}
+
+/* EL CORAZÓN GIGANTE ANIMADO (LATIDO) */
+.background-heart {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background-color: #ff4d6d;
+    transform: rotate(-45deg);
+    opacity: 0.18;
+    filter: blur(2px);
+    z-index: 1;
+    animation: heartbeat 1.6s infinite ease-in-out;
+}
+.background-heart::before,
+.background-heart::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background-color: #ff4d6d;
+    border-radius: 50%;
+}
+.background-heart::before { top: -140px; left: 0; }
+.background-heart::after { left: 140px; top: 0; }
+
+/* NOMBRE KORY CON EFECTO NEÓN PULSANTE */
+.background-text {
+    position: absolute;
+    font-family: 'Caveat', cursive;
+    font-size: 65px;
+    color: #ffffff;
+    z-index: 2;
+    pointer-events: none;
+    animation: neonGlow 2s infinite ease-in-out;
 }
 
 .container {
@@ -32,7 +67,7 @@ body {
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(255, 77, 109, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
     transition: transform 0.2s ease;
     animation: pulse 2s infinite;
 }
@@ -42,17 +77,19 @@ body {
     background: #ff758f;
 }
 
+/* TARJETA CON BORDE GLAMOUR */
 .card {
     display: none;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.94);
     padding: 20px;
     border-radius: 24px;
+    border: 2px solid rgba(255, 117, 143, 0.3);
     width: 90%;
     max-width: 420px;
     max-height: 85vh; 
     margin: auto;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(5px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
 }
 
 .card.show {
@@ -67,25 +104,42 @@ body {
     margin-bottom: 5px;
 }
 
-/* CAJA DEL CONTADOR */
+/* CAJA DEL CONTADOR ALINEADA */
 .counter-box {
-    background: rgba(255, 77, 109, 0.1);
+    background: rgba(255, 77, 109, 0.08);
     border-radius: 15px;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 15px;
     border: 1px dashed #ff4d6d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
+
+/* ANIMACIÓN DEL RELOJ DE ARENA */
+.hourglass {
+    font-size: 28px;
+    animation: sway 2.5s infinite ease-in-out;
+}
+
+.counter-text-side {
+    text-align: left;
+}
+
 .counter-title {
-    font-size: 12px;
+    font-size: 11px;
     color: #ff4d6d;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
+    margin-bottom: 2px;
 }
+
 .timer {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: #4a4a4a;
+    color: #333333;
 }
 
 /* TEXTO CON SCROLL */
@@ -167,6 +221,30 @@ body {
 .close-btn:hover {
     background: #ff758f;
     color: white;
+}
+
+/* ANIMACIONES */
+@keyframes sway {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(15deg); }
+    40% { transform: rotate(-15deg); }
+    60% { transform: rotate(10deg); }
+    80% { transform: rotate(-10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes heartbeat {
+    0% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
+    25% { transform: rotate(-45deg) scale(1.06); opacity: 0.25; }
+    40% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
+    55% { transform: rotate(-45deg) scale(1.06); opacity: 0.25; }
+    100% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
+}
+
+@keyframes neonGlow {
+    0% { text-shadow: 0 0 10px rgba(255, 77, 109, 0.6), 0 0 20px rgba(255, 77, 109, 0.4); }
+    50% { text-shadow: 0 0 18px rgba(255, 77, 109, 0.9), 0 0 30px rgba(255, 77, 109, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(255, 77, 109, 0.6), 0 0 20px rgba(255, 77, 109, 0.4); }
 }
 
 @keyframes pop {

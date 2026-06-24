@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi bonita 💖</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<audio id="bgMusic" src="carta_voz.mp3"></audio>
+
+<div class="container">
+    <button id="openBtn" onclick="openLetter()">Abrir para Kory 💌</button>
+
+    <div class="card" id="card">
+        <h1>💖 Para ti, Kory</h1>
+        
+        <div class="text-box">
+            <p id="text"></p>
+        </div>
+
+        <button class="close-btn" onclick="closeLetter()">Cerrar ✨</button>
+    </div>
+</div>
+
+<script>
+const normalText = [
+    "Eres bonita como el sol en la mañana 💕",
+    "como el cielo cuando su azul no se desgana ✨️",
+    "eres ese respiro que calma el alma entera ❤️‍🩹",
+    "la paz llega cuando todo desespera 💖",
+    "eres bonita sin hacer el intento ❤️💗",
+    "tu risa es melodía ✨️ tu voz una canción 🥺",
+    "y cuando hablas se acelera el corazón ❤️✨️",
+    "eres magia que no se compra 🌟🫶",
+    "eres luz que se entiende ❤️",
+    "y simplemente me encantas 🥺💖"
+];
+
+let currentTimeout;
+let currentInterval;
+let heartInterval;
+
+function openLetter() {
+    document.getElementById("openBtn").style.display = "none";
+    document.getElementById("card").classList.add("show");
+    
+    typeLines(normalText);
+    heartInterval = setInterval(createHeart, 300);
+
+    const audio = document.getElementById("bgMusic");
+    audio.currentTime = 0; 
+    audio.play().catch(e => console.log("Audio bloqueado por el navegador"));
+}
+
+function closeLetter() {
+    clearInterval(currentInterval);
+    clearTimeout(currentTimeout);
+    clearInterval(heartInterval);
+    
+    document.getElementById("card").classList.remove("show");
+    document.getElementById("text").innerHTML = "";
+    document.getElementById("openBtn").style.display = "inline-block";
+
+    document.getElementById("bgMusic").pause();
+}
+
+function typeLines(lines) {
+    let el = document.getElementById("text");
+    el.innerHTML = "";
+    let i = 0; let j = 0;
+
+    function write() {
+        if (i >= lines.length) return;
+        let line = Array.from(lines[i]);
+
+        currentInterval = setInterval(() => {
+            if (!line[j]) return;
+            el.innerHTML += line[j];
+            j++;
+
+            if (j >= line.length) {
+                clearInterval(currentInterval);
+                el.innerHTML += "<br><br>";
+                i++;
+                j = 0;
+                currentTimeout = setTimeout(write, 1200); 
+            }
+        }, 65); 
+    }
+    write();
+}
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = ['💖','💝','❤️','💕','💗'][Math.floor(Math.random() * 5)];
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+    heart.style.fontSize = Math.random() * 10 + 15 + 'px';
+    document.body.appendChild(heart);
+
+    setTimeout(() => { heart.remove(); }, 4000);
+}
+
+document.addEventListener('mousemove', (e) => { createSparkle(e.clientX, e.clientY); });
+document.addEventListener('touchmove', (e) => { createSparkle(e.touches[0].clientX, e.touches[0].clientY); });
+
+function createSparkle(x, y) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.innerHTML = '✨';
+    sparkle.style.left = x + 'px';
+    sparkle.style.top = y + 'px';
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => { sparkle.remove(); }, 800);
+}
+</script>
+
+</body>
+</html>

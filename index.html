@@ -10,14 +10,16 @@
 </head>
 <body>
 
-<div class="background-heart"></div>
-<div class="background-text">Kory</div>
-<div id="bg-particles"></div>
+<div id="bg-wrapper">
+    <div class="background-heart"></div>
+    <div class="background-text">Kory</div>
+    <div id="bg-particles"></div>
+</div>
 
 <audio id="bgMusic" src="carta_voz.mp3"></audio>
 
 <div class="container">
-    <button id="openBtn" onclick="openLetter()">Abrir para Kory 💌</button>
+    <button id="openBtn" onclick="openLetter(event)">Abrir para Kory 💌</button>
 
     <div class="card" id="card">
         <h1>💖 Para ti, Kory</h1>
@@ -39,7 +41,7 @@
         <div id="quiz-section" class="quiz-section" style="display: none;">
             <p class="quiz-title">¿Te gustó la sorpresa? 🥺</p>
             <div class="quiz-buttons">
-                <button id="siBtn" onclick="celebrate()">¡SÍ! 😍</button>
+                <button id="siBtn" onclick="celebrate(event)">¡SÍ! 😍</button>
                 <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO 😜</button>
             </div>
         </div>
@@ -82,11 +84,10 @@ function updateCounter() {
     document.getElementById("timer").innerHTML = `${days} d, ${hours}h ${minutes}m ${seconds}s`;
 }
 
-// Crear partículas lentas ambientales en el fondo negro
 function initBgParticles() {
     const container = document.getElementById('bg-particles');
     container.innerHTML = '';
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 22; i++) {
         const p = document.createElement('div');
         p.classList.add('bg-particle');
         p.style.left = Math.random() * 100 + 'vw';
@@ -98,19 +99,41 @@ function initBgParticles() {
 }
 window.onload = initBgParticles;
 
-function openLetter() {
-    document.getElementById("openBtn").style.display = "none";
-    document.getElementById("card").classList.add("show");
-    
-    typeLines(normalText);
-    heartInterval = setInterval(createHeart, 330);
-    
-    updateCounter();
-    timerInterval = setInterval(updateCounter, 1000);
+function createRipple(e) {
+    const button = e.currentTarget;
+    const circle = document.createElement("span");
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
 
-    const audio = document.getElementById("bgMusic");
-    audio.currentTime = 0; 
-    audio.play().catch(e => console.log("Audio diferido"));
+    const rect = button.getBoundingClientRect();
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${e.clientX - rect.left - radius}px`;
+    circle.style.top = `${e.clientY - rect.top - radius}px`;
+    circle.classList.add("ripple");
+
+    const prevRipple = button.getElementsByClassName("ripple")[0];
+    if (prevRipple) prevRipple.remove();
+
+    button.appendChild(circle);
+}
+
+function openLetter(e) {
+    createRipple(e);
+    setTimeout(() => {
+        document.getElementById("openBtn").style.display = "none";
+        document.getElementById("card").classList.add("show");
+        document.getElementById("bg-wrapper").classList.add("blur-effect");
+        
+        typeLines(normalText);
+        heartInterval = setInterval(createHeart, 280);
+        
+        updateCounter();
+        timerInterval = setInterval(updateCounter, 1000);
+
+        const audio = document.getElementById("bgMusic");
+        audio.currentTime = 0; 
+        audio.play().catch(err => console.log("Audio iniciado de forma segura"));
+    }, 250);
 }
 
 function closeLetter() {
@@ -120,6 +143,7 @@ function closeLetter() {
     clearInterval(timerInterval);
     
     document.getElementById("card").classList.remove("show");
+    document.getElementById("bg-wrapper").classList.remove("blur-effect");
     document.getElementById("text").innerHTML = "";
     document.getElementById("quiz-section").style.display = "none";
     document.getElementById("openBtn").style.display = "inline-block";
@@ -136,6 +160,8 @@ function typeLines(lines) {
     function write() {
         if (i >= lines.length) {
             document.getElementById("quiz-section").style.display = "block";
+            const textBox = document.querySelector('.text-box');
+            textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
             return;
         }
         let line = Array.from(lines[i]);
@@ -151,6 +177,9 @@ function typeLines(lines) {
                 i++;
                 j = 0;
                 currentTimeout = setTimeout(write, 350); 
+                
+                const textBox = document.querySelector('.text-box');
+                textBox.scrollTo({ top: textBox.scrollHeight, behavior: 'smooth' });
             }
         }, 22); 
     }
@@ -159,25 +188,28 @@ function typeLines(lines) {
 
 function moveNoButton() {
     const noBtn = document.getElementById("noBtn");
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 25);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 25);
     
     noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-function celebrate() {
+function celebrate(e) {
+    createRipple(e);
     var duration = 5 * 1000;
     var end = Date.now() + duration;
 
     (function frame() {
-      confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0, y: 0.8 } });
-      confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1, y: 0.8 } });
+      confetti({ particleCount: 6, angle: 60, spread: 65, origin: { x: 0, y: 0.8 } });
+      confetti({ particleCount: 6, angle: 120, spread: 65, origin: { x: 1, y: 0.8 } });
       if (Date.now() < end) { requestAnimationFrame(frame); }
     }());
     
-    alert("¡Sabía que te encantaría! Te amo un montón 💖");
+    setTimeout(() => {
+        alert("¡Sabía que te encantaría! Te amo un montón 💖");
+    }, 200);
 }
 
 function createHeart() {
@@ -186,7 +218,7 @@ function createHeart() {
     heart.innerHTML = ['💖','💝','❤️','💕','💗'][Math.floor(Math.random() * 5)];
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-    heart.style.fontSize = Math.random() * 8 + 16 + 'px';
+    heart.style.fontSize = Math.random() * 8 + 18 + 'px';
     document.body.appendChild(heart);
     setTimeout(() => { heart.remove(); }, 4000);
 }

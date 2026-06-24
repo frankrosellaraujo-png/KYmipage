@@ -11,44 +11,63 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #080808; /* Fondo negro premium */
+    background-color: #050505; /* Negro puro ultra-elegante */
     overflow: hidden;
     position: relative;
 }
 
-/* EL CORAZÓN GIGANTE ANIMADO (LATIDO) */
+/* PARTICULAS AMBIENTALES DE FONDO */
+#bg-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.bg-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 77, 109, 0.3);
+    border-radius: 50%;
+    animation: pulseAmbient infinite ease-in-out alternate;
+}
+
+/* EL CORAZÓN GIGANTE CON LATIDO NATURAL */
 .background-heart {
     position: absolute;
-    width: 280px;
-    height: 280px;
+    width: 290px;
+    height: 290px;
     background-color: #ff4d6d;
     transform: rotate(-45deg);
-    opacity: 0.18;
-    filter: blur(2px);
-    z-index: 1;
-    animation: heartbeat 1.6s infinite ease-in-out;
+    opacity: 0.15;
+    filter: blur(3px);
+    z-index: 2;
+    animation: heartbeat 1.5s infinite cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .background-heart::before,
 .background-heart::after {
     content: "";
     position: absolute;
-    width: 280px;
-    height: 280px;
+    width: 290px;
+    height: 290px;
     background-color: #ff4d6d;
     border-radius: 50%;
 }
-.background-heart::before { top: -140px; left: 0; }
-.background-heart::after { left: 140px; top: 0; }
+.background-heart::before { top: -145px; left: 0; }
+.background-heart::after { left: 145px; top: 0; }
 
-/* NOMBRE KORY CON EFECTO NEÓN PULSANTE */
+/* NOMBRE KORY CON EFECTO DE NEÓN LÍQUIDO */
 .background-text {
     position: absolute;
     font-family: 'Caveat', cursive;
-    font-size: 65px;
+    font-size: 70px;
     color: #ffffff;
-    z-index: 2;
+    z-index: 3;
     pointer-events: none;
-    animation: neonGlow 2s infinite ease-in-out;
+    animation: neonGlow 2.5s infinite ease-in-out;
 }
 
 .container {
@@ -59,68 +78,69 @@ body {
 }
 
 #openBtn {
-    padding: 15px 30px;
+    padding: 16px 35px;
     border: none;
     border-radius: 50px;
-    background: #ff4d6d;
+    background: linear-gradient(45deg, #ff4d6d, #ff758f);
     color: white;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
-    transition: transform 0.2s ease;
-    animation: pulse 2s infinite;
+    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.6);
+    transition: all 0.3s ease;
+    animation: pulseButton 2s infinite;
 }
 
 #openBtn:hover {
     transform: scale(1.05);
-    background: #ff758f;
+    box-shadow: 0 12px 35px rgba(255, 77, 109, 0.8);
 }
 
-/* TARJETA CON BORDE GLAMOUR */
+/* CARTA PREMIUM ESTILO CRISTAL (GLASSMORPHISM) */
 .card {
     display: none;
-    background: rgba(255, 255, 255, 0.94);
-    padding: 20px;
-    border-radius: 24px;
-    border: 2px solid rgba(255, 117, 143, 0.3);
-    width: 90%;
-    max-width: 420px;
-    max-height: 85vh; 
+    background: rgba(255, 255, 255, 0.92); /* Deja ver sutilmente el fondo */
+    padding: 24px;
+    border-radius: 28px;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    width: 92%;
+    max-width: 410px;
+    max-height: 84vh; 
     margin: auto;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .card.show {
     display: block;
-    animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: popUp 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card h1 {
     font-family: 'Caveat', cursive;
     color: #ff4d6d;
-    font-size: 34px;
-    margin-bottom: 5px;
+    font-size: 36px;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* CAJA DEL CONTADOR ALINEADA */
+/* CAJA DEL CONTADOR ESTILIZADA */
 .counter-box {
-    background: rgba(255, 77, 109, 0.08);
-    border-radius: 15px;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px dashed #ff4d6d;
+    background: linear-gradient(135deg, rgba(255, 77, 109, 0.08) 0%, rgba(255, 117, 143, 0.03) 100%);
+    border-radius: 18px;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px dashed rgba(255, 77, 109, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
 }
 
-/* ANIMACIÓN DEL RELOJ DE ARENA */
 .hourglass {
-    font-size: 28px;
-    animation: sway 2.5s infinite ease-in-out;
+    font-size: 30px;
+    animation: spinHourglass 3s infinite ease-in-out;
 }
 
 .counter-text-side {
@@ -132,25 +152,24 @@ body {
     color: #ff4d6d;
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
+    letter-spacing: 1.2px;
+    margin-bottom: 1px;
 }
 
 .timer {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
-    color: #333333;
+    color: #2b2b2b;
 }
 
-/* TEXTO CON SCROLL */
+/* TEXTO CON SCROLL FLUIDO */
 .text-box {
-    max-height: 35vh; 
+    max-height: 34vh; 
     overflow-y: auto;  
-    padding: 5px 10px;
-    margin-bottom: 15px;
+    padding: 5px 8px;
+    margin-bottom: 18px;
     -webkit-overflow-scrolling: touch; 
 }
-
 .text-box::-webkit-scrollbar {
     width: 4px;
 }
@@ -161,20 +180,20 @@ body {
 
 .card p {
     text-align: center;
-    line-height: 1.6;
-    font-size: 15px;
-    color: #4a4a4a;
+    line-height: 1.65;
+    font-size: 15.5px;
+    color: #444444;
 }
 
-/* BOTONES DEL JUEGO */
+/* SECCIÓN DE PREGUNTA */
 .quiz-section {
     margin-bottom: 15px;
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeIn 0.5s ease-out;
 }
 .quiz-title {
     font-weight: 600;
     color: #ff4d6d;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 .quiz-buttons {
     display: flex;
@@ -184,94 +203,96 @@ body {
     align-items: center;
 }
 #siBtn {
-    padding: 10px 25px;
+    padding: 10px 28px;
     background: #2ec4b6;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(46, 196, 182, 0.3);
+    box-shadow: 0 5px 15px rgba(46, 196, 182, 0.4);
+    transition: transform 0.2s;
 }
+#siBtn:hover { transform: scale(1.05); }
+
 #noBtn {
-    padding: 10px 25px;
+    padding: 10px 28px;
     background: #e71d36;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
     z-index: 1000;
-    transition: all 0.1s ease;
-    box-shadow: 0 4px 10px rgba(231, 29, 54, 0.3);
+    transition: transform 0.1s;
+    box-shadow: 0 5px 15px rgba(231, 29, 54, 0.4);
 }
 
 .close-btn {
-    padding: 6px 15px;
-    border: 2px solid #ff758f;
+    padding: 6px 18px;
+    border: 1.5px solid #ff758f;
     background: transparent;
     color: #ff758f;
     font-size: 13px;
-    border-radius: 20px;
+    border-radius: 50px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
 }
-
 .close-btn:hover {
     background: #ff758f;
     color: white;
 }
 
-/* ANIMACIONES */
-@keyframes sway {
-    0% { transform: rotate(0deg); }
-    20% { transform: rotate(15deg); }
+/* TODAS LAS ANIMACIONES OPTIMIZADAS */
+@keyframes spinHourglass {
+    0% { transform: rotate(0deg) scale(1); }
+    10% { transform: rotate(15deg); }
     40% { transform: rotate(-15deg); }
-    60% { transform: rotate(10deg); }
-    80% { transform: rotate(-10deg); }
-    100% { transform: rotate(0deg); }
+    45% { transform: rotate(180deg) scale(1.08); }
+    55% { transform: rotate(180deg) scale(1); }
+    65% { transform: rotate(195deg); }
+    90% { transform: rotate(165deg); }
+    100% { transform: rotate(360deg) scale(1); }
 }
 
 @keyframes heartbeat {
-    0% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
-    25% { transform: rotate(-45deg) scale(1.06); opacity: 0.25; }
-    40% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
-    55% { transform: rotate(-45deg) scale(1.06); opacity: 0.25; }
-    100% { transform: rotate(-45deg) scale(1); opacity: 0.18; }
+    0% { transform: rotate(-45deg) scale(1); opacity: 0.14; }
+    30% { transform: rotate(-45deg) scale(1.08); opacity: 0.22; }
+    45% { transform: rotate(-45deg) scale(0.98); opacity: 0.16; }
+    60% { transform: rotate(-45deg) scale(1.04); opacity: 0.20; }
+    100% { transform: rotate(-45deg) scale(1); opacity: 0.14; }
 }
 
 @keyframes neonGlow {
-    0% { text-shadow: 0 0 10px rgba(255, 77, 109, 0.6), 0 0 20px rgba(255, 77, 109, 0.4); }
-    50% { text-shadow: 0 0 18px rgba(255, 77, 109, 0.9), 0 0 30px rgba(255, 77, 109, 0.7); }
-    100% { text-shadow: 0 0 10px rgba(255, 77, 109, 0.6), 0 0 20px rgba(255, 77, 109, 0.4); }
+    0% { text-shadow: 0 0 10px rgba(255,77,109,0.6), 0 0 20px rgba(255,77,109,0.3); transform: scale(1); }
+    50% { text-shadow: 0 0 22px rgba(255,77,109,0.95), 0 0 35px rgba(255,77,109,0.6); transform: scale(1.02); }
+    100% { text-shadow: 0 0 10px rgba(255,77,109,0.6), 0 0 20px rgba(255,77,109,0.3); transform: scale(1); }
 }
 
-@keyframes pop {
-    from { transform: scale(0.8) translateY(30px); opacity: 0; }
+@keyframes pulseAmbient {
+    from { opacity: 0.2; transform: translateY(0); }
+    to { opacity: 0.7; transform: translateY(-20px); }
+}
+
+@keyframes popUp {
+    from { transform: scale(0.85) translateY(40px); opacity: 0; }
     to { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-@keyframes pulse {
+@keyframes pulseButton {
     0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); }
+    70% { box-shadow: 0 0 0 18px rgba(255, 77, 109, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 .heart {
     position: absolute;
     bottom: -5vh;
     pointer-events: none;
-    z-index: 1;
+    z-index: 4;
     animation: floatUp linear forwards;
-    opacity: 0.8;
 }
-
 @keyframes floatUp {
     0% { transform: translateY(0) rotate(0deg); opacity: 1; }
     100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
@@ -284,8 +305,7 @@ body {
     font-size: 12px;
     animation: fadeOut 0.8s ease-out forwards;
 }
-
 @keyframes fadeOut {
     0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    100% { transform: translate(-50%, -100%) scale(0.3); opacity: 0; }
+    100% { transform: translate(-50%, -120%) scale(0.2); opacity: 0; }
 }

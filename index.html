@@ -6,27 +6,22 @@
     <title>Para mi bonita 💖</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Librería para el efecto de confeti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-<!-- ELEMENTOS DEL FONDO DE PANTALLA MEJORADOS -->
 <div class="background-heart"></div>
 <div class="background-text">Kory</div>
+<div id="bg-particles"></div>
 
-<!-- Tu nota de voz grabada en MP3 -->
 <audio id="bgMusic" src="carta_voz.mp3"></audio>
 
 <div class="container">
-    <!-- BOTÓN DE INICIO -->
     <button id="openBtn" onclick="openLetter()">Abrir para Kory 💌</button>
 
-    <!-- CARTA -->
     <div class="card" id="card">
         <h1>💖 Para ti, Kory</h1>
         
-        <!-- CONTADOR DE TIEMPO CON RELOJ DE ARENA -->
         <div id="counter-box" class="counter-box">
             <div class="hourglass">⏳</div>
             <div class="counter-text-side">
@@ -35,12 +30,10 @@
             </div>
         </div>
 
-        <!-- Caja con scroll para el texto -->
         <div class="text-box">
             <p id="text"></p>
         </div>
 
-        <!-- SECCIÓN DE PREGUNTA INTERACTIVA -->
         <div id="quiz-section" class="quiz-section" style="display: none;">
             <p class="quiz-title">¿Te gustó la sorpresa? 🥺</p>
             <div class="quiz-buttons">
@@ -87,20 +80,34 @@ function updateCounter() {
     document.getElementById("timer").innerHTML = `${days} días, ${hours}h ${minutes}m ${seconds}s`;
 }
 
+// Crear partículas lentas ambientales en el fondo negro
+function initBgParticles() {
+    const container = document.getElementById('bg-particles');
+    for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.classList.add('bg-particle');
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        p.style.animationDelay = Math.random() * 5 + 's';
+        p.style.animationDuration = Math.random() * 6 + 6 + 's';
+        container.appendChild(p);
+    }
+}
+window.onload = initBgParticles;
+
 function openLetter() {
     document.getElementById("openBtn").style.display = "none";
     document.getElementById("card").classList.add("show");
     
     typeLines(normalText);
-    heartInterval = setInterval(createHeart, 300);
+    heartInterval = setInterval(createHeart, 280);
     
-    // Iniciar contador
     updateCounter();
     timerInterval = setInterval(updateCounter, 1000);
 
     const audio = document.getElementById("bgMusic");
     audio.currentTime = 0; 
-    audio.play().catch(e => console.log("Audio bloqueado por el navegador"));
+    audio.play().catch(e => console.log("Audio diferido o bloqueado"));
 }
 
 function closeLetter() {
@@ -140,7 +147,7 @@ function typeLines(lines) {
                 el.innerHTML += "<br><br>";
                 i++;
                 j = 0;
-                currentTimeout = setTimeout(write, 400); 
+                currentTimeout = setTimeout(write, 350); 
             }
         }, 20); 
     }
@@ -158,26 +165,13 @@ function moveNoButton() {
 }
 
 function celebrate() {
-    var duration = 4 * 1000;
+    var duration = 5 * 1000;
     var end = Date.now() + duration;
 
     (function frame() {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.8 }
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.8 }
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
+      confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0, y: 0.8 } });
+      confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1, y: 0.8 } });
+      if (Date.now() < end) { requestAnimationFrame(frame); }
     }());
     
     alert("¡Sabía que te encantaría! Te amo un montón 💖");
@@ -189,9 +183,8 @@ function createHeart() {
     heart.innerHTML = ['💖','💝','❤️','💕','💗'][Math.floor(Math.random() * 5)];
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-    heart.style.fontSize = Math.random() * 10 + 15 + 'px';
+    heart.style.fontSize = Math.random() * 8 + 16 + 'px';
     document.body.appendChild(heart);
-
     setTimeout(() => { heart.remove(); }, 4000);
 }
 
@@ -205,7 +198,6 @@ function createSparkle(x, y) {
     sparkle.style.left = x + 'px';
     sparkle.style.top = y + 'px';
     document.body.appendChild(sparkle);
-
     setTimeout(() => { sparkle.remove(); }, 800);
 }
 </script>

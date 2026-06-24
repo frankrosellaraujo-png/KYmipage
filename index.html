@@ -6,22 +6,43 @@
     <title>Para mi bonita 💖</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Librería para el efecto de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
+<!-- Tu nota de voz grabada en MP3 -->
 <audio id="bgMusic" src="carta_voz.mp3"></audio>
 
 <div class="container">
+    <!-- BOTÓN DE INICIO -->
     <button id="openBtn" onclick="openLetter()">Abrir para Kory 💌</button>
 
+    <!-- CARTA -->
     <div class="card" id="card">
         <h1>💖 Para ti, Kory</h1>
         
+        <!-- CONTADOR DE TIEMPO -->
+        <div id="counter-box" class="counter-box">
+            <p class="counter-title">Llevamos juntos:</p>
+            <div id="timer" class="timer">0 días, 0h 0m 0s</div>
+        </div>
+
+        <!-- Caja con scroll para el texto -->
         <div class="text-box">
             <p id="text"></p>
         </div>
 
-        <button class="close-btn" onclick="closeLetter()">Cerrar ✨</button>
+        <!-- SECCIÓN DE PREGUNTA INTERACTIVA -->
+        <div id="quiz-section" class="quiz-section" style="display: none;">
+            <p class="quiz-title">¿Te gustó la sorpresa? 🥺</p>
+            <div class="quiz-buttons">
+                <button id="siBtn" onclick="celebrate()">¡SÍ! 😍</button>
+                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO 😜</button>
+            </div>
+        </div>
+
+        <button id="closeBtn" class="close-btn" onclick="closeLetter()">Cerrar ✨</button>
     </div>
 </div>
 
@@ -42,6 +63,22 @@ const normalText = [
 let currentTimeout;
 let currentInterval;
 let heartInterval;
+let timerInterval;
+
+// FECHA DE ANIVERSARIO: 13 de Febrero de 2026
+const anniversaryDate = new Date("2026-02-13T00:00:00"); 
+
+function updateCounter() {
+    const now = new Date();
+    const diff = now - anniversaryDate;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML = `${days} días, ${hours}h ${minutes}m ${seconds}s`;
+}
 
 function openLetter() {
     document.getElementById("openBtn").style.display = "none";
@@ -49,6 +86,10 @@ function openLetter() {
     
     typeLines(normalText);
     heartInterval = setInterval(createHeart, 300);
+    
+    // Iniciar contador
+    updateCounter();
+    timerInterval = setInterval(updateCounter, 1000);
 
     const audio = document.getElementById("bgMusic");
     audio.currentTime = 0; 
@@ -59,10 +100,13 @@ function closeLetter() {
     clearInterval(currentInterval);
     clearTimeout(currentTimeout);
     clearInterval(heartInterval);
+    clearInterval(timerInterval);
     
     document.getElementById("card").classList.remove("show");
     document.getElementById("text").innerHTML = "";
+    document.getElementById("quiz-section").style.display = "none";
     document.getElementById("openBtn").style.display = "inline-block";
+    document.getElementById("noBtn").style.position = "static";
 
     document.getElementById("bgMusic").pause();
 }
@@ -73,7 +117,11 @@ function typeLines(lines) {
     let i = 0; let j = 0;
 
     function write() {
-        if (i >= lines.length) return;
+        if (i >= lines.length) {
+            // Cuando termina el texto, muestra la pregunta con los botones
+            document.getElementById("quiz-section").style.display = "block";
+            return;
+        }
         let line = Array.from(lines[i]);
 
         currentInterval = setInterval(() => {
@@ -86,11 +134,47 @@ function typeLines(lines) {
                 el.innerHTML += "<br><br>";
                 i++;
                 j = 0;
-                currentTimeout = setTimeout(write, 1200); 
+                currentTimeout = setTimeout(write, 400); 
             }
-        }, 65); 
+        }, 20); 
     }
     write();
+}
+
+function moveNoButton() {
+    const noBtn = document.getElementById("noBtn");
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+    
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+function celebrate() {
+    var duration = 4 * 1000;
+    var end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.8 }
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.8 }
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+    
+    alert("¡Sabía que te encantaría! Te amo un montón 💖");
 }
 
 function createHeart() {
